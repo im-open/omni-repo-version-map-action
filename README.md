@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Map versions
         id: map-versions
-        uses: omni-repo-version-map-action
+        uses: im-open/omni-repo-version-map-action@v1
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
@@ -45,7 +45,7 @@ jobs:
 
 ## Recompiling
 
-If changes are made, you will need to re-compile the action. 
+If changes are made to the action's code in this repository, or its dependencies, you will need to re-compile the action. 
 
 ```
 # Installs dependencies and bundles the code
@@ -55,4 +55,4 @@ npm run build
 npm run bundle
 ```
 
-These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and it's dependencies into a single file located in the `dist` folder.
+These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and its dependencies into a single file located in the `dist` folder.

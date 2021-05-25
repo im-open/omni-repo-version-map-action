@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const exec = require('../util/_exec');
 const isMainBranch = require('../util/_isMainBranch');
 
@@ -10,7 +11,7 @@ const getLatestTagForProject = async tagPrefix => {
 
   // fallback to 0.0.* for the Bff
   if (tagPrefix === 'Bff') {
-    console.log('falling back to 0.0.* versioning');
+    core.info('falling back to 0.0.* versioning');
     ({ stdout: matchingTags } = await exec(`git tag --list 0.0.* --sort=-creatordate`));
   }
 

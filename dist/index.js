@@ -335,6 +335,7 @@ var require_isMainBranch = __commonJS({
 // src/versioning.js
 var require_versioning = __commonJS({
   "src/versioning.js"(exports2, module2) {
+    var core2 = require_core();
     var exec = require_exec();
     var isMainBranch = require_isMainBranch();
     var getTagPrefix = (project) => project.match(/\w+\.(\w+)/)[1];
@@ -343,7 +344,7 @@ var require_versioning = __commonJS({
       if (matchingTags)
         return matchingTags.trim().split("\n")[0];
       if (tagPrefix === "Bff") {
-        console.log("falling back to 0.0.* versioning");
+        core2.info("falling back to 0.0.* versioning");
         ({ stdout: matchingTags } = await exec(`git tag --list 0.0.* --sort=-creatordate`));
       }
       const version = matchingTags ? matchingTags.trim().split("\n")[0] : "0.0.0";
@@ -390,8 +391,8 @@ var core = require_core();
 var { determineUpdatedProjects } = require_projects();
 var { mapTags } = require_versioning();
 var outputProjects = (projects) => {
-  console.log("The following projects will be updated with the specified versions");
-  console.log(projects);
+  core.info("The following projects will be updated with the specified versions");
+  core.info(projects);
   core.setOutput("version_map", projects);
 };
 var run = async () => {
