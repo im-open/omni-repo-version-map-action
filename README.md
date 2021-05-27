@@ -51,6 +51,8 @@ jobs:
     outputs:
       env: ${{ steps.map-versions.outputs.version_map }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Map versions
         id: map-versions
         uses: im-open/omni-repo-version-map-action@v1

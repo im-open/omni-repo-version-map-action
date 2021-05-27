@@ -3,7 +3,9 @@ const { determineUpdatedProjects } = require('./projects');
 const { mapTags } = require('./versioning');
 
 const outputProjects = projects => {
-  core.info('The following projects will be updated with the specified versions');
+  core.info(
+    'The following projects will be updated with the specified versions'
+  );
   core.info(projects);
 
   core.setOutput('version_map', projects);
