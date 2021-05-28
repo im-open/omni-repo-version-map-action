@@ -15,7 +15,7 @@
       "pre-push": "npm run format-check"
     }
   },
-  "author": "",
+  "author": "wtw",
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6"
