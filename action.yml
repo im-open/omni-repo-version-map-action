@@ -1,0 +1,19 @@
+name: 'Omni Repo - .Net Core Project Versioning'
+description: 'Github Action for determining version bumps for .Net Core projects'
+author: 'aabenoja'
+branding:
+  icon: 'package'
+  color: 'orange'
+inputs:
+  shared_project:
+    required: false
+    description: 'The name of a project that should result in all projects being updated. All projects are versioned independently by default.'
+  include_shared_project:
+    required: false
+    description: 'Selectively include the specified shared project from the version_map output. The shared project is excluded by default.'
+outputs:
+  version_map:
+    description: 'A JSON object that maps the projects that need to be updated (based on their name) and their new version'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
