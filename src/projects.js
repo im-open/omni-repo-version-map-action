@@ -14,16 +14,12 @@ const getUpdatedProjects = files =>
 const getAllProjects = async (sharedProject, includeSharedProject) => {
   const { stdout } = await exec('ls src');
   const projects = stdout.trim().split('\n');
-  return includeSharedProject
-    ? projects
-    : projects.filter(project => project !== sharedProject);
+  return includeSharedProject ? projects : projects.filter(project => project !== sharedProject);
 };
 
 const determineUpdatedProjects = async () => {
   const sharedProject = actionsCore.getInput('shared_project');
-  const includeSharedProject = Boolean(
-    actionsCore.getInput('include_shared_project')
-  );
+  const includeSharedProject = Boolean(actionsCore.getInput('include_shared_project'));
 
   const { stdout: tag } = await exec('git describe --tags --abbrev=0');
   const { stdout: files } = await exec(`git diff --name-only HEAD ${tag}`);

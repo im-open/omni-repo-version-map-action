@@ -1,9 +1,6 @@
 var __commonJS = (cb, mod) =>
   function __require() {
-    return (
-      mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod),
-      mod.exports
-    );
+    return mod || (0, cb[Object.keys(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
 
 // node_modules/@actions/core/lib/utils.js
@@ -181,20 +178,14 @@ var require_file_command = __commonJS({
     function issueCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
       if (!filePath) {
-        throw new Error(
-          `Unable to find environment variable for file command ${command}`
-        );
+        throw new Error(`Unable to find environment variable for file command ${command}`);
       }
       if (!fs.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs.appendFileSync(
-        filePath,
-        `${utils_1.toCommandValue(message)}${os.EOL}`,
-        {
-          encoding: 'utf8'
-        }
-      );
+      fs.appendFileSync(filePath, `${utils_1.toCommandValue(message)}${os.EOL}`, {
+        encoding: 'utf8'
+      });
     }
     exports2.issueCommand = issueCommand;
   }
@@ -268,9 +259,7 @@ var require_core = __commonJS({
             }
           }
           function step(result) {
-            result.done
-              ? resolve(result.value)
-              : adopt(result.value).then(fulfilled, rejected);
+            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
           }
           step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
@@ -330,14 +319,11 @@ var require_core = __commonJS({
       } else {
         command_1.issueCommand('add-path', {}, inputPath);
       }
-      process.env[
-        'PATH'
-      ] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
+      process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
     }
     exports2.addPath = addPath;
     function getInput(name, options) {
-      const val =
-        process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
+      const val = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
       if (options && options.required && !val) {
         throw new Error(`Input required and not supplied: ${name}`);
       }
@@ -380,17 +366,11 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
     exports2.debug = debug;
     function error(message) {
-      command_1.issue(
-        'error',
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issue('error', message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
     function warning(message) {
-      command_1.issue(
-        'warning',
-        message instanceof Error ? message.toString() : message
-      );
+      command_1.issue('warning', message instanceof Error ? message.toString() : message);
     }
     exports2.warning = warning;
     function info(message) {
@@ -458,9 +438,7 @@ var require_projects = __commonJS({
     };
     var determineUpdatedProjects2 = async () => {
       const sharedProject = actionsCore.getInput('shared_project');
-      const includeSharedProject = Boolean(
-        actionsCore.getInput('include_shared_project')
-      );
+      const includeSharedProject = Boolean(actionsCore.getInput('include_shared_project'));
       const { stdout: tag } = await exec('git describe --tags --abbrev=0');
       const { stdout: files } = await exec(`git diff --name-only HEAD ${tag}`);
       let projects = getUpdatedProjects(files.trim().split('\n'));
@@ -478,9 +456,7 @@ var require_isMainBranch = __commonJS({
   'util/_isMainBranch.js'(exports2, module2) {
     var exec = require_exec();
     var isMain = async () => {
-      let { stdout: branchName } = await exec(
-        'git rev-parse --abbrev-ref HEAD'
-      );
+      let { stdout: branchName } = await exec('git rev-parse --abbrev-ref HEAD');
       branchName = branchName.trim();
       return branchName === 'main' || branchName === 'master';
     };
@@ -502,13 +478,9 @@ var require_versioning = __commonJS({
       if (matchingTags) return matchingTags.trim().split('\n')[0];
       if (tagPrefix === 'Bff') {
         core2.info('falling back to 0.0.* versioning');
-        ({ stdout: matchingTags } = await exec(
-          `git tag --list 0.0.* --sort=-creatordate`
-        ));
+        ({ stdout: matchingTags } = await exec(`git tag --list 0.0.* --sort=-creatordate`));
       }
-      const version = matchingTags
-        ? matchingTags.trim().split('\n')[0]
-        : '0.0.0';
+      const version = matchingTags ? matchingTags.trim().split('\n')[0] : '0.0.0';
       return `${tagPrefix}-${version}`;
     };
     var bumpVersion = tag => {
@@ -516,9 +488,7 @@ var require_versioning = __commonJS({
       return `${major}.${minor}.${Number(patch) + 1}`;
     };
     var getBranchName = async () => {
-      const { stdout: branchName } = await exec(
-        'git rev-parse --abbrev-ref HEAD'
-      );
+      const { stdout: branchName } = await exec('git rev-parse --abbrev-ref HEAD');
       return branchName.trim();
     };
     var getPreReleaseSuffix = async () => {
@@ -553,9 +523,7 @@ var core = require_core();
 var { determineUpdatedProjects } = require_projects();
 var { mapTags } = require_versioning();
 var outputProjects = projects => {
-  core.info(
-    'The following projects will be updated with the specified versions'
-  );
+  core.info('The following projects will be updated with the specified versions');
   core.info(projects);
   core.setOutput('version_map', projects);
 };

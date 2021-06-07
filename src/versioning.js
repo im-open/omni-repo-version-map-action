@@ -5,18 +5,14 @@ const isMainBranch = require('../util/_isMainBranch');
 const getTagPrefix = project => project.match(/\w+\.(\w+)/)[1];
 
 const getLatestTagForProject = async tagPrefix => {
-  let { stdout: matchingTags } = await exec(
-    `git tag --list ${tagPrefix}-* --sort=-creatordate`
-  );
+  let { stdout: matchingTags } = await exec(`git tag --list ${tagPrefix}-* --sort=-creatordate`);
 
   if (matchingTags) return matchingTags.trim().split('\n')[0];
 
   // fallback to 0.0.* for the Bff
   if (tagPrefix === 'Bff') {
     core.info('falling back to 0.0.* versioning');
-    ({ stdout: matchingTags } = await exec(
-      `git tag --list 0.0.* --sort=-creatordate`
-    ));
+    ({ stdout: matchingTags } = await exec(`git tag --list 0.0.* --sort=-creatordate`));
   }
 
   const version = matchingTags ? matchingTags.trim().split('\n')[0] : '0.0.0';
