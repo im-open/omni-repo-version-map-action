@@ -518,7 +518,7 @@ var require_versioning = __commonJS({
   }
 });
 
-// src/index.js
+// src/main.js
 var core = require_core();
 var { determineUpdatedProjects } = require_projects();
 var { mapTags } = require_versioning();
