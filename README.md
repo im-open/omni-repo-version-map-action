@@ -4,12 +4,21 @@ Github Action for determining version bumps for .Net Core projects. It looks und
 
 The version format is `{Major}-{Minor}-{Patch}`, with an appended branch name when run on feature branches. Only the Patch number is incremented automatically.
 
+  - [Inputs](#inputs)
+  - [Output](#output)
+  - [Example](#example)
+  - [Contributing](#contributing)
+    - [Recompiling](#recompiling)
+    - [Incrementing the Version](#incrementing-the-version)
+  - [Code of Conduct](#code-of-conduct)
+  - [License](#license)
+  
 ## Inputs
 
-| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `shared_project`                 | The name of a project that should result in all projects being updated. All projects are versioned independently by default.                                                                                           |
-| `include_shared_project`               |  Selectively include the specified shared project from the version_map output. The shared project is excluded by default.                                             |  
+| Parameter                | Description                                                                                                                  |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `shared_project`         | The name of a project that should result in all projects being updated. All projects are versioned independently by default. |
+| `include_shared_project` | Selectively include the specified shared project from the version_map output. The shared project is excluded by default.     |
 
 ## Output
 
@@ -55,22 +64,30 @@ jobs:
         uses: actions/checkout@v2
       - name: Map versions
         id: map-versions
-        uses: im-open/omni-repo-version-map-action@v1
+        uses: im-open/omni-repo-version-map-action@v1.0.1
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
       - name: Tag Project Versions
-        uses: im-open/omni-repo-git-tag-action@v1
+        uses: im-open/omni-repo-git-tag-action@v1.0.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version_map: ${{ steps.map-versions.outputs.version_map }}
 ```
 
-## Recompiling
+## Contributing
+
+When creating new PRs please ensure:
+1. The action has been recompiled.  See the [Recompiling](#recompiling) section below for more details.
+2. For major or minor changes, at least one of the commit messages contains the appropriate `-semver:` keywords listed under [Incrementing the Version](#incrementing-the-version).
+3. The `README.md` example has been updated with the new version.  See [Incrementing the Version](#incrementing-the-version).
+4. The action code does not contain sensitive information.
+
+### Recompiling
 
 If changes are made to the action's code in this repository, or its dependencies, you will need to re-compile the action.
 
-```
+```sh
 # Installs dependencies and bundles the code
 npm run build
 
@@ -78,4 +95,26 @@ npm run build
 npm run bundle
 ```
 
-These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and its dependencies into a single file located in the `dist` folder.
+These commands utilize [esbuild](https://esbuild.github.io/getting-started/#bundling-for-node) to bundle the action and
+its dependencies into a single file located in the `dist` folder.
+
+### Incrementing the Version
+
+This action uses [git-version-lite] to examine commit messages to determine whether to perform a major, minor or patch increment on merge.  The following table provides the fragment that should be included in a commit message to active different increment strategies.
+| Increment Type | Commit Message Fragment                     |
+| -------------- | ------------------------------------------- |
+| major          | -semver:breaking                            |
+| major          | -semver:major                               |
+| minor          | -semver:feature                             |
+| minor          | -semver:minor                               |
+| patch          | -default increment type, no comment needed- |
+
+## Code of Conduct
+
+This project has adopted the [im-open's Code of Conduct](https://github.com/im-open/.github/blob/master/CODE_OF_CONDUCT.md).
+
+## License
+
+Copyright &copy; 2021, Extend Health, LLC. Code released under the [MIT license](LICENSE).
+
+[git-version-lite]: https://github.com/im-open/git-version-lite
