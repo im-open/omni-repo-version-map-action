@@ -3,15 +3,17 @@
 Github Action for determining version bumps for .Net Core projects. It looks under the `src` folder for any sub folders. The sub folder names are expected to follow the pattern `<Project Name>.<Project Type>`, e.g. `MyProject.Bff` or `MyProject.Api`. This Action then determines if changes have been made to items in those folders and if so, maps the folder name to an object containing the new version and a name for the tag. See [the Output section below for more details](#output).
 
 The version format is `{Major}-{Minor}-{Patch}`, with an appended branch name when run on feature branches. Only the Patch number is incremented automatically.
+    
+## Index 
 
-  - [Inputs](#inputs)
-  - [Output](#output)
-  - [Example](#example)
-  - [Contributing](#contributing)
-    - [Recompiling](#recompiling)
-    - [Incrementing the Version](#incrementing-the-version)
-  - [Code of Conduct](#code-of-conduct)
-  - [License](#license)
+- [Inputs](#inputs)
+- [Output](#output)
+- [Example](#example)
+- [Contributing](#contributing)
+  - [Recompiling](#recompiling)
+  - [Incrementing the Version](#incrementing-the-version)
+- [Code of Conduct](#code-of-conduct)
+- [License](#license)
   
 ## Inputs
 
@@ -64,12 +66,12 @@ jobs:
         uses: actions/checkout@v2
       - name: Map versions
         id: map-versions
-        uses: im-open/omni-repo-version-map-action@v1.0.1
+        uses: im-open/omni-repo-version-map-action@v1.0.2
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
       - name: Tag Project Versions
-        uses: im-open/omni-repo-git-tag-action@v1.0.1
+        uses: im-open/omni-repo-git-tag-action@v1.0.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version_map: ${{ steps.map-versions.outputs.version_map }}
@@ -79,7 +81,7 @@ jobs:
 
 When creating new PRs please ensure:
 1. The action has been recompiled.  See the [Recompiling](#recompiling) section below for more details.
-2. For major or minor changes, at least one of the commit messages contains the appropriate `-semver:` keywords listed under [Incrementing the Version](#incrementing-the-version).
+2. For major or minor changes, at least one of the commit messages contains the appropriate `+semver:` keywords listed under [Incrementing the Version](#incrementing-the-version).
 3. The `README.md` example has been updated with the new version.  See [Incrementing the Version](#incrementing-the-version).
 4. The action code does not contain sensitive information.
 
@@ -103,11 +105,11 @@ its dependencies into a single file located in the `dist` folder.
 This action uses [git-version-lite] to examine commit messages to determine whether to perform a major, minor or patch increment on merge.  The following table provides the fragment that should be included in a commit message to active different increment strategies.
 | Increment Type | Commit Message Fragment                     |
 | -------------- | ------------------------------------------- |
-| major          | -semver:breaking                            |
-| major          | -semver:major                               |
-| minor          | -semver:feature                             |
-| minor          | -semver:minor                               |
-| patch          | -default increment type, no comment needed- |
+| major          | +semver:breaking                            |
+| major          | +semver:major                               |
+| minor          | +semver:feature                             |
+| minor          | +semver:minor                               |
+| patch          | *default increment type, no comment needed* |
 
 ## Code of Conduct
 
