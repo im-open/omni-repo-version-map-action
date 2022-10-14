@@ -15,5 +15,5 @@ outputs:
   version_map:
     description: 'A JSON object that maps the projects that need to be updated (based on their name) and their new version'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
