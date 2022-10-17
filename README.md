@@ -63,15 +63,15 @@ jobs:
       env: ${{ steps.map-versions.outputs.version_map }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Map versions
         id: map-versions
-        uses: im-open/omni-repo-version-map-action@v1.0.4
+        uses: im-open/omni-repo-version-map-action@v1.1.0
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
       - name: Tag Project Versions
-        uses: im-open/omni-repo-git-tag-action@v1.0.5
+        uses: im-open/omni-repo-git-tag-action@v1.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version_map: ${{ steps.map-versions.outputs.version_map }}
