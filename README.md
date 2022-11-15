@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Map versions
         id: map-versions
-        uses: im-open/omni-repo-version-map-action@v1.1.0
+        uses: im-open/omni-repo-version-map-action@v1.1.1
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
