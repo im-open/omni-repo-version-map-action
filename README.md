@@ -3,14 +3,14 @@
 Github Action for determining version bumps for .Net Core projects. It looks under the `src` folder for any sub folders. The sub folder names are expected to follow the pattern `<Project Name>.<Project Type>`, e.g. `MyProject.Bff` or `MyProject.Api`. This Action then determines if changes have been made to items in those folders and if so, maps the folder name to an object containing the new version and a name for the tag. See [the Output section below for more details](#output).
 
 The version format is `{Major}-{Minor}-{Patch}`, with an appended branch name when run on feature branches. Only the Patch number is incremented automatically.
-    
-## Index 
+
+## Index
 
 - [Inputs](#inputs)
 - [Output](#output)
 - [Example](#example)
 - [Contributing](#contributing)
-  - [Recompiling](#recompiling)
+  - [Recompiling](#recompiling-manually)
   - [Incrementing the Version](#incrementing-the-version)
 - [Code of Conduct](#code-of-conduct)
 - [License](#license)
@@ -36,6 +36,7 @@ A JSON object called `version_map` that maps the projects that need to be update
 ```
 
 For example:
+
 ```json
 {
   "MyProject.Bff": {
@@ -64,14 +65,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Map versions
         id: map-versions
-        uses: im-open/omni-repo-version-map-action@v1.1.1
+        # You may also reference the major or major.minor version
+        uses: im-open/omni-repo-version-map-action@v1.1.2
         with:
           shared_project: MyProject_Shared
           include_shared_project: true
+
       - name: Tag Project Versions
-        uses: im-open/omni-repo-git-tag-action@v1.1.0
+        uses: im-open/omni-repo-git-tag-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version_map: ${{ steps.map-versions.outputs.version_map }}
